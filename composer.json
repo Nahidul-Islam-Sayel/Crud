@@ -1,0 +1,21 @@
+{
+    "name": "nahidul/nahidul-crud",
+    "description": "a crud application for learing",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Nahidul-Islam-Sayel",
+            "email": "islamnahidul0825@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4":{
+            "WeDevs\\Academy\\": "includes/"
+        },
+        "files": []
+    }
+
+}
