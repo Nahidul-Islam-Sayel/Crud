@@ -1,8 +1,16 @@
-<?php 
+<?php
+
 namespace WeDevs\Academy;
 
-class Frontend{
-	function __construct(){
-		new Frontend\Shortcode();
-	}
+/**
+ * Frontend handler class
+ */
+class Frontend {
+
+    /**
+     * Initialize the class
+     */
+    function __construct() {
+        new Frontend\Shortcode();
+    }
 }

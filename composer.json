@@ -1,21 +1,20 @@
 {
-    "name": "nahidul/nahidul-crud",
-    "description": "a crud application for learing",
+    "name": "Nahidul/wedevs-academy",
+    "description": "A tutorial plugin for weDevs Academy",
     "type": "wordpress-plugin",
     "license": "GPLv2",
     "authors": [
         {
-            "name": "Nahidul-Islam-Sayel",
-            "email": "islamnahidul0825@gmail.com"
+            "name": "Nahidul Islam Sayel",
+            "email": "nahidulislamsayel@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {},
     "autoload": {
-        "psr-4":{
+        "psr-4": {
             "WeDevs\\Academy\\": "includes/"
         },
-        "files": []
+        "files": [ "./includes/function.php" ]
     }
-
 }
