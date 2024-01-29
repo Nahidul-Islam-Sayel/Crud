@@ -1,6 +1,10 @@
 <div class="wrap">
     <h1><?php _e( 'New Address', 'wedevs-academy' ); ?></h1>
-
+    <?php if ( isset( $_GET['new'] ) ) { ?>
+        <div class="notice notice-success">
+            <p><?php _e( 'Address Added successfully!', 'wedevs-academy' ); ?></p>
+        </div>
+    <?php } ?>
     <?php var_dump( $this->errors ); ?>
 
     <form action="" method="post">
@@ -12,6 +16,11 @@
                     </th>
                     <td>
                         <input type="text" name="name" id="name" class="regular-text" value="">
+                        <?php if ( $this->has_error( 'name' ) ) { ?>
+                            <p class="description error"><?php echo $this->get_error( 'name' ); ?></p>
+                        <?php } ?>
+
+
                     </td>
                 </tr>
                 <tr>
@@ -28,6 +37,9 @@
                     </th>
                     <td>
                         <input type="text" name="phone" id="phone" class="regular-text" value="">
+                        <?php if ( $this->has_error( 'phone' ) ) { ?>
+                            <p class="description error"><?php echo $this->get_error( 'phone' ); ?></p>
+                        <?php } ?>
                     </td>
                 </tr>
             </tbody>

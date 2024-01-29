@@ -24,21 +24,102 @@ function wd_ac_insert_address( $args = [] ) {
 
     $data = wp_parse_args( $args, $defaults );
 
-    $inserted = $wpdb->insert(
-        $wpdb->prefix . 'ac_addresses',
-        $data,
-        [
-            '%s',
-            '%s',
-            '%s',
-            '%d',
-            '%s'
-        ]
+    // Check if ID is set, then it's an update
+    if ( isset( $data['id'] ) ) {
+        $id = $data['id'];
+        unset( $data['id'] );
+
+        $updated = $wpdb->update(
+            $wpdb->prefix . 'ac_addresses',
+            $data,
+            ['id' => $id],
+            [
+                '%s',
+                '%s',
+                '%s',
+                '%d',
+                '%s'
+            ],
+            ['%d']
+        );
+
+        if ( ! $updated ) {
+            return new \WP_Error( 'failed-to-update', __( 'Failed to update data', 'wedevs-academy' ) );
+        }
+
+        return $id;
+    } else {
+        // It's an insert
+        $inserted = $wpdb->insert(
+            $wpdb->prefix . 'ac_addresses',
+            $data,
+            [
+                '%s',
+                '%s',
+                '%s',
+                '%d',
+                '%s'
+            ]
+        );
+
+        if ( ! $inserted ) {
+            return new \WP_Error( 'failed-to-insert', __( 'Failed to insert data', 'wedevs-academy' ) );
+        }
+
+        return $wpdb->insert_id;
+    }
+}
+
+function wd_ac_get_address( $id ) {
+    global $wpdb;
+
+    return $wpdb->get_row(
+        $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ac_addresses WHERE id = %d", $id )
+    );
+}
+
+function wd_ac_get_addresses( $args = [] ) {
+    global $wpdb;
+
+    $defaults = [
+        'number'  => 20,
+        'offset'  => 0,
+        'orderby' => 'id',
+        'order'   => 'ASC'
+    ];
+
+    $args = wp_parse_args( $args, $defaults );
+
+    $sql = $wpdb->prepare(
+        "SELECT * FROM {$wpdb->prefix}ac_addresses
+        ORDER BY {$args['orderby']} {$args['order']}
+        LIMIT %d, %d",
+        $args['offset'], $args['number']
     );
 
-    if ( ! $inserted ) {
-        return new \WP_Error( 'failed-to-insert', __( 'Failed to insert data', 'wedevs-academy' ) );
-    }
+    $items = $wpdb->get_results( $sql );
 
-    return $wpdb->insert_id;
+    return $items;
+}
+
+function wd_ac_address_count() {
+    global $wpdb;
+    return (int) $wpdb->get_var( "SELECT count(id) FROM {$wpdb->prefix}ac_addresses" );
+}
+
+// Add another version of the function to get an address count by ID
+function wd_ac_address_count_by_id( $id ) {
+    global $wpdb;
+    return $wpdb->get_var(
+        $wpdb->prepare( "SELECT count(id) FROM {$wpdb->prefix}ac_addresses WHERE id = %d", $id )
+    );
+}
+
+function wd_ac_delete_address( $id ) {
+    global $wpdb;
+    return $wpdb->delete(
+        $wpdb->prefix . "ac_addresses",
+        ['id' => $id],
+        ['%d']
+    );
 }
